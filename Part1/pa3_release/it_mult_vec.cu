@@ -38,6 +38,16 @@ __global__ void mult_vec_async(int n, int rows_per_thread, int num_async_iter, f
 	{
 		/*Perform asynchronous Gauss-Seidel method for y=d+Ay*/
 		/*Your solution*/
+		for (int i = 0; i < rows_per_thread; i++) {
+			int row_index = idx * rows_per_thread + i;
+			double sum = d[row_index];
+			for (int j = 0; j < n; j++)
+			{
+				sum += A[row_index * n + j] * x[j];
+				y[row_index] = sum;
+			}
+		}
+		
 
 #ifdef DEBUG1
 		dprint_samplexy("GS GPU ", k, x, y, n);
@@ -232,6 +242,12 @@ int it_mult_vec(int N,
 	}
 	/*Copy the final solution vector y from device. */
 	/*Your solution*/
+	result = cudaMemcpy(y_d, y, row_size, cudaMemcpyDeviceToHost);
+		if (result)
+		{
+			printf("Error in cudaMemcpy. Error code is %d.\n", result);
+			return -1;
+		}
 
 	cudaFree(A_d);
 	cudaFree(x_d);
