@@ -44,14 +44,12 @@ __global__ void mult_vec_async(int n, int rows_per_thread, int num_async_iter, f
 			for (int j = 0; j < n; j++)
 			{
 				sum += A[row_index * n + j] * x[j];
-				y[row_index] = sum;
 			}
 		}
 		
-
-#ifdef DEBUG1
-		dprint_samplexy("GS GPU ", k, x, y, n);
-#endif
+		#ifdef DEBUG1
+			dprint_samplexy("GS GPU ", k, x, y, n);
+		#endif
 	}
 
 	for (int i = 0; i < rows_per_thread; i++)
@@ -214,7 +212,7 @@ int it_mult_vec(int N,
 		else
 		{	/* call a kernel Jacobi method to compute y=d+Ax*/
 			/*Your solution*/
-
+			multi_vec<<<num_blocks, threads_per_block>>>(N, rows_per_thread, y_d, d_d, A_d, x_d, diff_d);
 			k++;
 		}
 		// Detect convergence. Copy the difference vector from the device
