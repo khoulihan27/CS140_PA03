@@ -129,7 +129,7 @@ int it_mult_vec(int N, int num_blocks, int threads_per_block, float *y,
     printf("Error in cudaMalloc. Error code is %d.\n", result);
     return -1;
   }
-  result = cudaMemcpy(A_d, A, row_size, cudaMemcpyHostToDevice);
+  result = cudaMemcpy(A_d, A, A_size, cudaMemcpyHostToDevice);
   if (result) {
     printf("Error in cudaMemcpy. Error code is %d.\n", result);
     return -1;
@@ -211,7 +211,7 @@ int it_mult_vec(int N, int num_blocks, int threads_per_block, float *y,
   }
   /*Copy the final solution vector y from device. */
   /*Your solution*/
-  result = cudaMemcpy(y_d, y, row_size, cudaMemcpyDeviceToHost);
+  result = cudaMemcpy(y, y_d, row_size, cudaMemcpyDeviceToHost);
   if (result) {
     printf("Error in cudaMemcpy. Error code is %d.\n", result);
     return -1;
