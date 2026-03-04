@@ -123,11 +123,13 @@ void run_cublas_dgemm(cublasHandle_t handle, const double *d_A, const double *d_
     
     // Warm-up run (This is an optional action)
     // Your solution to make a warm-up call to cublasDgemm  in the next line.
+    cublasDgemm();
 
     // Main run with timing
     handle_cuda_error(cudaEventRecord(start, 0), "cudaEventRecord(start, 0)", __FILE__, __LINE__);
 
     // Your solution to make a cublasDgemm call in the next line
+    cublasDgemm();
     handle_cublas_error( (cublasStatus_t) NULL,
                  "cublasDgemm (Main)", __FILE__, __LINE__);
     handle_cuda_error(cudaEventRecord(stop, 0), "cudaEventRecord(stop, 0)", __FILE__, __LINE__);
