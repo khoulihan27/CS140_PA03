@@ -128,7 +128,7 @@ void run_cublas_dgemm(cublasHandle_t handle, const double *d_A, const double *d_
     handle_cuda_error(cudaEventRecord(start, 0), "cudaEventRecord(start, 0)", __FILE__, __LINE__);
 
     // Your solution to make a cublasDgemm call in the next line
-    handle_cublas_error( (cublasStatus_t) NULL,
+    handle_cublas_error( (cublasStatus_t) cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, size_N, size_N, size_N, &alpha, d_A, size_N, d_B, size_N, &beta, d_C, size_N),
                  "cublasDgemm (Main)", __FILE__, __LINE__);
     handle_cuda_error(cudaEventRecord(stop, 0), "cudaEventRecord(stop, 0)", __FILE__, __LINE__);
     handle_cuda_error(cudaEventSynchronize(stop), "cudaEventSynchronize(stop)", __FILE__, __LINE__);
