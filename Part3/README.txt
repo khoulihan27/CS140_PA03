@@ -1,7 +1,3 @@
-I called the following function to cublasDgemm
-
-cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, size_N, size_N, size_N, &alpha, d_A, size_N, d_B, size_N, &beta, d_C, size_N),
-
 # Statistics
 CUDA matrix-matrix multiply (50x50 matrices) with column major
 1. cuBLAS dgemm (optimized library)    Latency: 0.113 ms   GFLOPS:  2.219
@@ -39,4 +35,17 @@ CUDA matrix-matrix multiply (3200x3200 matrices) with column major
 Mid-point verification looks OK: DGEMM=800.1449, DGEMV=800.1449, Naive=800.1449
 
 # Answers
-The highest GFLOPS
+I called the following function to cublasDgemm
+
+cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, size_N, size_N, size_N, &alpha, d_A, size_N, d_B, size_N, &beta, d_C, size_N),
+
+
+The number of CUDA threads used in Method 3 via the Naive GEMM is gridDim.x * gridDim.y * gridDim.z * blockDim.x * blockDim.y * blockDim.z. BLOCK_SIZE = 20 and N is the matrix size so threads = ((N + 20 - 1)/20)^2 * 20^2.
+For 50x50, we have 3,600
+200x200, we have 40,000
+800x800, 640,000
+1600x1600, 2,560,000
+3200x3200, 10,240,000
+
+The highest GFLOPS is consistently cuBLAS dgemm as expected then the naive GEMM and lastly cuBLAS dgemv. here the highest GFLOPS when N=1600 was 6161.696 GFLOPS.
+The PA2 MKL GEMM code with N=1600 was 42.67 GFLOPS. Thus speedup is 6161.696 / 42.67 = 144.4 speedup. This is a tremendous speedup and shows why using the cuda library makes such a big difference.
