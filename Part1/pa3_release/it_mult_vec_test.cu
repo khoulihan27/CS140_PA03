@@ -367,7 +367,7 @@ int main()
 
 	run_basic_tests();
 	/*You should call large matrix tests only after passing your basic tests.*/
-	/*run_large_matrix_tests();*/
+	run_large_matrix_tests();
 
 	mu_print_test_summary("\nSummary:");
 }
